@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField('Name', max_length=100)
-    slug = models.SlugField(max_length=100)
+    slug = models.SlugField(max_length=100) # на английском выводит name
 
     class Meta:
         verbose_name = 'Категория'
@@ -18,6 +18,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, verbose_name='Категория', related_name='posts')
+    # вместо category.posts.all.count можно писать category.post_set.count, если не делал related_name="", где post - название класса Post
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Text')
