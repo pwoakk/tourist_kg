@@ -46,7 +46,7 @@ class RegularTour(models.Model):
         ordering = ['-start']
 
     def __str__(self):
-        return f'{self.tour.title} - {self.start}'
+        return f'{self.tour.title} - {self.start.date()}'
 
 
 class TourBooking(models.Model):
@@ -66,7 +66,7 @@ class TourBooking(models.Model):
     place_count = models.PositiveSmallIntegerField('Места')
     mobile = models.CharField('Номер телефона', max_length=10)
     status = models.CharField('Статус', max_length=11, choices=BOOKING_STATUS, default=STATUS_NEW)
-    is_paid = models.BooleanField('Оплачено', null=False)
+    is_paid = models.BooleanField('Оплачено', default=False)
     notice = models.CharField('Дополнительная информация', max_length=255, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

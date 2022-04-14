@@ -1,4 +1,6 @@
 from django.contrib import admin
+
+
 from.models import Post, Comment, Category
 # Register your models here.
 
@@ -15,3 +17,4 @@ class PostAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'id']
     prepopulated_fields = {'slug':('name',)}
+

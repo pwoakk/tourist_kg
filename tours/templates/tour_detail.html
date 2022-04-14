@@ -34,11 +34,13 @@
               {% for regular_tour in tour.regulartour_set.all %}
               <a href="#" class="list-group-item list-group-item-action">
                 <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">Начало: {{ regular_tour.start }}-Конец: {{ regular_tour.end }}</h5>
+                  <h5 class="mb-1">Начало: {{ regular_tour.start|date:"d.m.Y H:i" }}<br>Конец: {{ regular_tour.end|date:"d.m.Y H:i" }}</h5>
                   <small>Колличество мест: {{ regular_tour.places_count }}</small>
                 </div>
                 <p class="mb-1">Some placeholder content in a paragraph.</p>
-                <button type="button" class="btn btn-warning">Забронировать</button>
+                <button type="button" class="btn btn-warning" style="color:white" data-toggle="modal" data-target="#tour_modal">
+                  Забронировать
+                </button>
                 <small>And some small print.</small>
               </a>
               {% empty %}
@@ -54,4 +56,27 @@
         </div>
       </div>
     </section> <!-- .section -->
+
+    <div class="modal fade" id="tour_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Бронирование тура</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form method="post" action="{% url 'booking' tour.pk %}">
+          <div class="modal-body">
+               {% csrf_token %}
+               {{ form }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            <button type="submit" class="btn btn-primary">Забронировать</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
 {% endblock %}
