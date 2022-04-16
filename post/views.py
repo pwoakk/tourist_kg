@@ -1,7 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import FormView
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404
 
-from .forms import CommentForm
+from .forms import CommentForm, PostCreateForm
 from .models import Post, Category, Comment
 
 
@@ -55,3 +57,15 @@ def get_post_detail_list(request, **kwargs):
     }
     return render(request, 'post_detail.html', context=context)
 
+
+class PostCreateView(LoginRequiredMixin, FormView):
+    template_name = 'post_create.html'
+    form_class = PostCreateForm
+    success_url = '/'
+    login_url = 'sign_in'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.author = self.request.user
+        instance.save()
+        return super().form_valid(form)
